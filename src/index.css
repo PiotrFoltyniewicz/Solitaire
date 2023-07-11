@@ -1,0 +1,65 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    margin:  0;
+    background-color: green;
+}
+
+.menu{
+    height: 75px;
+    background-color: rgb(2, 87, 2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    height: 200px;
+}
+
+.upperPart{
+    background-color: rgb(4, 110, 4);
+    padding: 25px;
+    height: 250px;
+    display: flex;
+}
+
+.extraBoard{
+    width: 40%;
+}
+
+.foundationBoard{
+    width: 60%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 50px;
+}
+
+.foundationStack{
+    margin: 25px;
+}
+
+.mainBoard{
+    display: flex;
+    padding: 50px;
+    justify-content: center;
+}
+
+.mainStack{
+    position: relative;
+    margin: 0 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.extraStack{
+    position: relative;
+}
+
+.extraStack > .card{
+    position: absolute;
+}
