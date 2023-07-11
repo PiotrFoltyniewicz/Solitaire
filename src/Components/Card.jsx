@@ -1,8 +1,6 @@
 export default function Card(props) {
 
     return (
-      <>
-        <p className="card">{props.number} {props.color}</p>
-      </>
+      <img className='card' src={`/cards/${props.number}_of_${props.color}.svg`}/>
     )
   }
