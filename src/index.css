@@ -29,19 +29,28 @@ body{
 
 .extraBoard{
     width: 40%;
+    padding-left: 50px;
 }
 
 .foundationBoard{
     width: 60%;
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: start;
     padding-left: 50px;
 }
 
 .foundationStack{
-    margin: 25px;
+    margin: 0 100px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
+
+.foundationStack > .card{
+    position: absolute;
+}
+
 
 .mainBoard{
     display: flex;
@@ -51,9 +60,13 @@ body{
 
 .mainStack{
     position: relative;
-    margin: 0 25px;
+    margin: 0 100px;
     display: flex;
     flex-direction: column;
+}
+
+.mainStack > .card{
+    position: absolute;
 }
 
 .extraStack{
