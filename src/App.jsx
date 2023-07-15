@@ -2,16 +2,33 @@ import cardsData from './cardsData.js';
 import MainBoard from './Components/MainBoard.jsx';
 import FoundationBoard from './Components/FoundationBoard.jsx';
 import ExtraBoard from './Components/ExtraBoard.jsx';
-import Card from './Components/Card.jsx';
 import Menu from './Components/Menu.jsx';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
 
-  const [shuffledCards, setShuffledCards] = useState([]);
+  const [shuffledCards, setShuffledCards] = useState(firstShuffle());
+
+  function firstShuffle() {
+    const tempCardsArray = cardsData.slice();
+    for (let card of tempCardsArray) {
+      card.visible = false;
+    }
+    const arrLength = tempCardsArray.length;
+    let outputCardsArray = [];
+
+    for (let i = 0; i < arrLength; i++) {
+      let rndIndex = Math.floor(Math.random() * tempCardsArray.length);
+      outputCardsArray.push(tempCardsArray.splice(rndIndex, 1)[0]);
+    }
+    return outputCardsArray;
+  }
 
   function shuffleCards() {
     const tempCardsArray = cardsData.slice();
+    for (let card of tempCardsArray) {
+      card.visible = false;
+    }
     const arrLength = tempCardsArray.length;
     let outputCardsArray = [];
 

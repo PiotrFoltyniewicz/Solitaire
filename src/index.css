@@ -28,6 +28,8 @@ body{
 }
 
 .extraBoard{
+    display: flex;
+    justify-content: space-around;
     width: 40%;
     padding-left: 50px;
 }
@@ -69,10 +71,10 @@ body{
     position: absolute;
 }
 
-.extraStack{
+.extraStack, .extraVisibleStack{
     position: relative;
 }
 
-.extraStack > .card{
+.extraStack > .card, .extraVisibleStack > .card{
     position: absolute;
 }

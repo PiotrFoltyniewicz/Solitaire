@@ -1,6 +1,12 @@
+import cardBack from '../assets/card_back.svg'
+
 export default function Card(props) {
 
   return (
-    <img className='card' src={`/cards/${props.number}_of_${props.color}.svg`} style={props.shift} />
+    <img
+      className='card'
+      src={props.visible ? `/cards/${props.number}_of_${props.color}.svg` : cardBack}
+      style={props.shift}
+    />
   )
 }
