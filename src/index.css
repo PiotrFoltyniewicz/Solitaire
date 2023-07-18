@@ -78,3 +78,7 @@ body{
 .extraStack > .card, .extraVisibleStack > .card{
     position: absolute;
 }
+
+.clickedCard{
+    border: 2px solid yellow;
+}

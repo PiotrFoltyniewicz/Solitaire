@@ -2,7 +2,7 @@ export default function Menu(props) {
 
   return (
     <div className='menu'>
-      <button onClick={props.handleClick}>Shuffle cards</button>
+      <button onClick={props.handleClick}>New game</button>
     </div>
   )
 }
