@@ -29,9 +29,10 @@ body{
 
 .extraBoard{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     width: 40%;
     padding-left: 50px;
+    gap: 50px;
 }
 
 .foundationBoard{
@@ -43,7 +44,7 @@ body{
 }
 
 .foundationStack{
-    margin: 0 100px;
+    margin: 0 25px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -53,16 +54,19 @@ body{
     position: absolute;
 }
 
-
 .mainBoard{
     display: flex;
     padding: 50px;
     justify-content: center;
 }
 
+.mainStack, .extraStack, .foundationStack{
+    width: 137px;
+}
+
 .mainStack{
     position: relative;
-    margin: 0 100px;
+    margin: 0 25px;
     display: flex;
     flex-direction: column;
 }
@@ -79,6 +83,11 @@ body{
     position: absolute;
 }
 
-.clickedCard{
+.card:hover{
+    border: 2px black solid;
+    border-radius: 7px;
+}
+
+.chosenCard{
     border: 2px solid yellow;
 }

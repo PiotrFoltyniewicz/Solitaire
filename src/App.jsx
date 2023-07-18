@@ -7,8 +7,9 @@ import { useState } from 'react';
 
 function App() {
 
-  const [cards, setCards] = useState([[], [], [], [], [], [], [], []]);
-  const [currentCard, setCurrentCard] = useState(null)
+  const [cards, setCards] = useState([[], [], [], [], [], [], [], [], []]);
+  const [currentCard, setCurrentCard] = useState(null);
+  const [gameRuns, setGameRuns] = useState(() => false);
 
   function newGame() {
     setCards([[], [], [], [], [], [], [], []]);
@@ -32,39 +33,53 @@ function App() {
       prevCards[5].push(...outputCardsArray.splice(0, 6));
       prevCards[6].push(...outputCardsArray.splice(0, 7));
       prevCards[7].push(...outputCardsArray.splice(0, 24));
+      prevCards[8] = [];
       return prevCards;
     })
+    setGameRuns(true);
   }
 
-
-  function clickedCard() {
-
+  function showExtraCards() {
+    setCards(prevCards => {
+      const copiedCards = [...prevCards];
+      if (copiedCards[7].length === 0) {
+        copiedCards[7].push(...copiedCards[8].splice(0));
+      } else {
+        copiedCards[8].push(...copiedCards[7].splice(0, 3));
+      }
+      return copiedCards;
+    })
   }
 
   return (
     <div>
       <Menu handleClick={newGame} />
-      <div className='upperPart gameArea'>
-        <div className='extraBoard'>
-          <ExtraStack cards={cards[7]} />
-        </div>
-        <div className='foundationBoard'>
-          <FoundationStack />
-          <FoundationStack />
-          <FoundationStack />
-          <FoundationStack />
-        </div>
-      </div>
-      <div className='mainBoard'>
-        <MainStack cards={cards[0]} />
-        <MainStack cards={cards[1]} />
-        <MainStack cards={cards[2]} />
-        <MainStack cards={cards[3]} />
-        <MainStack cards={cards[4]} />
-        <MainStack cards={cards[5]} />
-        <MainStack cards={cards[6]} />
-      </div>
+      {gameRuns &&
+        <>
+          <div className='upperPart gameArea'>
+            <div className='extraBoard'>
+              <ExtraStack cards={cards[7]} shownCards={cards[8]} showExtraCards={showExtraCards} />
+            </div>
+            <div className='foundationBoard'>
+              <FoundationStack />
+              <FoundationStack />
+              <FoundationStack />
+              <FoundationStack />
+            </div>
+          </div>
+          <div className='mainBoard'>
+            <MainStack cards={cards[0]} />
+            <MainStack cards={cards[1]} />
+            <MainStack cards={cards[2]} />
+            <MainStack cards={cards[3]} />
+            <MainStack cards={cards[4]} />
+            <MainStack cards={cards[5]} />
+            <MainStack cards={cards[6]} />
+          </div>
+        </>
+      }
     </div>
+
   )
 }
 
