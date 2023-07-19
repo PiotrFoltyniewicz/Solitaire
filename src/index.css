@@ -64,6 +64,10 @@ body{
     width: 137px;
 }
 
+.extraVisibleStack{
+    width: 200px;
+}
+
 .mainStack{
     position: relative;
     margin: 0 25px;
@@ -83,11 +87,14 @@ body{
     position: absolute;
 }
 
+/*
 .card:hover{
-    border: 2px black solid;
+    border: 1px black solid;
     border-radius: 7px;
 }
+*/
 
 .chosenCard{
-    border: 2px solid yellow;
+    border: 3px solid yellow;
+    border-radius: 7px;
 }

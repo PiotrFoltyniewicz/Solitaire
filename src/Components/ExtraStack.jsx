@@ -22,7 +22,7 @@ export default function ExtraStack(props) {
           <img className='card' src={blankCard} />
         }
       </div>
-      <div className='extraVisibleStack'>
+      <div className='extraVisibleStack' onClick={props.chooseCard}>
         {card1 &&
           <Card
             key={card1.id}
@@ -46,6 +46,7 @@ export default function ExtraStack(props) {
             color={card3.color}
             visible={true}
             shift={{ left: 60 + 'px' }}
+            isCurrent={card3.isCurrent}
           />}
       </div>
     </>

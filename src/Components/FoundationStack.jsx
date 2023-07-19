@@ -1,5 +1,5 @@
 import blankCard from '../assets/blank_card.svg';
-import Card from "./Card"
+import Card from "./Card";
 
 export default function FoundationStack(props) {
 
