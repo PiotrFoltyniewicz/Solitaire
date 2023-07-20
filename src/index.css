@@ -14,6 +14,24 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+
+}
+
+.menu button{
+    width: 300px;
+    height: 50px;
+    border: 4px rgb(4, 110, 4) solid;
+    background-color: rgb(2, 87, 2);
+    color: white;
+    font-size: 1.5em;
+}
+
+.menu button:hover{
+    background-color: rgb(4, 110, 4);
+}
+
+.menu button:active{
+    background-color: rgb(2, 87, 2);
 }
 
 .card{
@@ -87,14 +105,24 @@ body{
     position: absolute;
 }
 
-/*
+
 .card:hover{
     border: 1px black solid;
     border-radius: 7px;
 }
-*/
+
 
 .chosenCard{
-    border: 3px solid yellow;
+
+    border: 3px solid yellow !important;
     border-radius: 7px;
+}
+
+.gameEnd{
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    color: white;
 }
