@@ -12,10 +12,12 @@ function App() {
   const [gameState, setGameState] = useState(() => 'before');
 
   function newGame() {
+    setCurrentCard(null);
     setCards([[], [], [], [], [], [], [], []]);
     const tempCardsArray = cardsData.slice();
     for (let card of tempCardsArray) {
       card.visible = false;
+      card.isCurrent = false;
     }
     const arrLength = tempCardsArray.length;
     let outputCardsArray = [];
@@ -71,7 +73,6 @@ function App() {
   }
 
   function clickCard(stackNum, cardNum) {
-
     // choose card
     if (currentCard === null) {
       if (cards[stackNum].length === 0) return;
@@ -165,7 +166,7 @@ function App() {
       return false;
     } else if (stackNum > 8) {
       // placing card on not empty foundation stack
-      if (cardBelow.color == currCard.color && cardBelow.number + 1 == currCard.number) return true;
+      if (cardBelow.color == currCard.color && parseInt(cardBelow.number) + 1 == currCard.number) return true;
       return false;
     } else if (!cardBelow && stackNum < 7) {
       // placing card on empty main stack
@@ -173,11 +174,11 @@ function App() {
       return false;
     } else if (stackNum < 7 && (currCard.color === 'spades' || currCard.color === 'clubs')) {
       // placing card on not empty main stack when current card is red
-      if ((cardBelow.color === 'hearts' || cardBelow.color === 'diamonds') && cardBelow.number - 1 == currCard.number) return true;
+      if ((cardBelow.color === 'hearts' || cardBelow.color === 'diamonds') && parseInt(cardBelow.number) - 1 == currCard.number) return true;
       return false;
     } else if (stackNum < 7 && (currCard.color === 'hearts' || currCard.color === 'diamonds')) {
       // placing card on not empty main stack when current card is red
-      if ((cardBelow.color === 'clubs' || cardBelow.color === 'spades') && cardBelow.number - 1 == currCard.number) return true;
+      if ((cardBelow.color === 'clubs' || cardBelow.color === 'spades') && parseInt(cardBelow.number) - 1 == currCard.number) return true;
       return false;
     }
   }
