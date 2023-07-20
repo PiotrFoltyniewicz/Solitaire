@@ -100,7 +100,7 @@ function App() {
       setCurrentCard([stackNum, cardNum]);
 
       // place card on main stacks
-    } else if (stackNum < 7 && checkPlacing(stackNum, cardNum)) {
+    } else if (currentCard !== null && stackNum < 7 && checkPlacing(stackNum, cardNum)) {
       setCards(prevCards => {
 
         let currCard = prevCards[currentCard[0]][currentCard[1]];
@@ -124,7 +124,7 @@ function App() {
       setCurrentCard(null);
 
       // place on foundation stacks
-    } else if (stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1 && checkPlacing(stackNum, cardNum)) {
+    } else if (currentCard !== null && stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1 && checkPlacing(stackNum, cardNum)) {
 
       setCards(prevCards => {
 
@@ -149,7 +149,7 @@ function App() {
       setCurrentCard(null);
     }
     else {
-      resetClick(stackNum, cardNum);
+      resetClick();
     }
     updateVisibility();
     gameFinished();
@@ -189,11 +189,14 @@ function App() {
     }
   }
 
-  function resetClick(stackNum, cardNum) {
+  function resetClick() {
+
     setCards(prevCards => {
 
       let currCard = prevCards[currentCard[0]][currentCard[1]];
       const copiedCards = [...prevCards];
+
+      if (!currentCard) return;
 
       for (let stack of copiedCards) {
         let nextCards = false;
