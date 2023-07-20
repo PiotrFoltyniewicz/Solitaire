@@ -54,6 +54,7 @@ function App() {
       }
       return copiedCards;
     })
+    updateVisibility();
   }
 
 
@@ -61,33 +62,131 @@ function App() {
     setCards(prevCards => {
       const copiedCards = [...prevCards];
 
-      copiedCards[0][copiedCards[0].length - 1].visible = true;
-      copiedCards[1][copiedCards[1].length - 1].visible = true;
-      copiedCards[2][copiedCards[2].length - 1].visible = true;
-      copiedCards[3][copiedCards[3].length - 1].visible = true;
-      copiedCards[4][copiedCards[4].length - 1].visible = true;
-      copiedCards[5][copiedCards[5].length - 1].visible = true;
-      copiedCards[6][copiedCards[6].length - 1].visible = true;
-
+      for (let i = 0; i < 13; i++) {
+        if (copiedCards[i].length === 0 || i === 7) continue;
+        copiedCards[i][copiedCards[i].length - 1].visible = true;
+      }
       return copiedCards;
     })
   }
 
-  function chooseCard(stackNum) {
-    let currCard = cards[stackNum][cards[stackNum].length - 1];
-    currCard.isCurrent = true;
-    setCards(prevCards => {
-      const copiedCards = [...prevCards];
-      for (let stack of copiedCards) {
-        for (let card of stack) {
-          if (card.id !== currCard.id) {
-            card.isCurrent = false;
+  function clickCard(stackNum, cardNum) {
+
+    // choose card
+    if (currentCard === null) {
+      if (cards[stackNum].length === 0) return;
+
+      let currCard = cards[stackNum][cardNum];
+      if (!currCard.visible) return;
+
+      setCards(prevCards => {
+        const copiedCards = [...prevCards];
+        for (let stack of copiedCards) {
+          let nextCards = false;
+          for (let i = 0; i < stack.length; i++) {
+            if (stack[i].id === currCard.id) {
+              nextCards = true;
+            }
+            if (nextCards) {
+              stack[i].isCurrent = true;
+            } else {
+              stack[i].isCurrent = false;
+            }
           }
         }
-      }
-      return copiedCards;
-    })
-    setCurrentCard(currCard);
+        return copiedCards;
+      });
+      setCurrentCard([stackNum, cardNum]);
+
+      // place card on main stacks
+    } else if (stackNum < 7) {
+      setCards(prevCards => {
+
+        let currCard = prevCards[currentCard[0]][currentCard[1]];
+        const copiedCards = [...prevCards];
+
+        for (let stack of copiedCards) {
+          let nextCards = false;
+          for (let i = 0; i < stack.length; i++) {
+            if (stack[i].id === currCard.id) {
+              nextCards = true;
+            }
+            if (nextCards) {
+              stack[i].isCurrent = false;
+            }
+          }
+        }
+        copiedCards[stackNum].push(...copiedCards[currentCard[0]].splice(currentCard[1]));
+
+        return copiedCards;
+      });
+      setCurrentCard(null);
+
+      // place on extra visible stack (unclick card)
+    } else if (stackNum === 8) {
+      setCards(prevCards => {
+        let currCard = prevCards[currentCard[0]][currentCard[1]];
+        const copiedCards = [...prevCards];
+
+        for (let stack of copiedCards) {
+          for (let i = 0; i < stack.length; i++) {
+            if (stack[i].id === currCard.id) {
+              stack[i].isCurrent = false;
+            }
+          }
+        }
+        return copiedCards;
+      });
+      setCurrentCard(null);
+
+      // place on foundation stacks
+    } else if (stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1) {
+
+      setCards(prevCards => {
+
+        let currCard = prevCards[currentCard[0]][currentCard[1]];
+        const copiedCards = [...prevCards];
+
+        for (let stack of copiedCards) {
+          let nextCards = false;
+          for (let i = 0; i < stack.length; i++) {
+            if (stack[i].id === currCard.id) {
+              nextCards = true;
+            }
+            if (nextCards) {
+              stack[i].isCurrent = false;
+            }
+          }
+        }
+        copiedCards[stackNum].push(copiedCards[currentCard[0]].pop());
+
+        return copiedCards;
+      });
+      setCurrentCard(null);
+    }
+    else {
+      setCards(prevCards => {
+
+        let currCard = prevCards[currentCard[0]][currentCard[1]];
+        const copiedCards = [...prevCards];
+
+        for (let stack of copiedCards) {
+          let nextCards = false;
+          for (let i = 0; i < stack.length; i++) {
+            if (stack[i].id === currCard.id) {
+              nextCards = true;
+            }
+            if (nextCards) {
+              stack[i].isCurrent = false;
+            }
+          }
+        }
+
+        return copiedCards;
+      });
+      setCurrentCard(null);
+    }
+    updateVisibility();
   }
 
   return (
@@ -97,23 +196,23 @@ function App() {
         <>
           <div className='upperPart gameArea'>
             <div className='extraBoard'>
-              <ExtraStack cards={cards[7]} shownCards={cards[8]} showExtraCards={showExtraCards} chooseCard={() => chooseCard(8)} />
+              <ExtraStack cards={cards[7]} shownCards={cards[8]} showExtraCards={showExtraCards} stackNum={8} interact={clickCard} />
             </div>
             <div className='foundationBoard'>
-              <FoundationStack chooseCard={() => chooseCard(9)} />
-              <FoundationStack chooseCard={() => chooseCard(10)} />
-              <FoundationStack chooseCard={() => chooseCard(11)} />
-              <FoundationStack chooseCard={() => chooseCard(12)} />
+              <FoundationStack cards={cards[9]} stackNum={9} interact={clickCard} />
+              <FoundationStack cards={cards[10]} stackNum={10} interact={clickCard} />
+              <FoundationStack cards={cards[11]} stackNum={11} interact={clickCard} />
+              <FoundationStack cards={cards[12]} stackNum={12} interact={clickCard} />
             </div>
           </div>
           <div className='mainBoard'>
-            <MainStack cards={cards[0]} chooseCard={() => chooseCard(0)} />
-            <MainStack cards={cards[1]} chooseCard={() => chooseCard(1)} />
-            <MainStack cards={cards[2]} chooseCard={() => chooseCard(2)} />
-            <MainStack cards={cards[3]} chooseCard={() => chooseCard(3)} />
-            <MainStack cards={cards[4]} chooseCard={() => chooseCard(4)} />
-            <MainStack cards={cards[5]} chooseCard={() => chooseCard(5)} />
-            <MainStack cards={cards[6]} chooseCard={() => chooseCard(6)} />
+            <MainStack cards={cards[0]} stackNum={0} interact={clickCard} />
+            <MainStack cards={cards[1]} stackNum={1} interact={clickCard} />
+            <MainStack cards={cards[2]} stackNum={2} interact={clickCard} />
+            <MainStack cards={cards[3]} stackNum={3} interact={clickCard} />
+            <MainStack cards={cards[4]} stackNum={4} interact={clickCard} />
+            <MainStack cards={cards[5]} stackNum={5} interact={clickCard} />
+            <MainStack cards={cards[6]} stackNum={6} interact={clickCard} />
           </div>
         </>
       }
