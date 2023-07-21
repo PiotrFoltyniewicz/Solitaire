@@ -27,8 +27,6 @@ export default function FoundationStack(props) {
                 number={card.number}
                 color={card.color}
                 visible={card.visible}
-                isCurrent={card.isCurrent}
-                clickCard={() => props.interact(props.stackNum, i - 1)}
               />)
           }) :
           <img className='card' src={blankCard} onClick={() => props.interact(props.stackNum, 0)} />
