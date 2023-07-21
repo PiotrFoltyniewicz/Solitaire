@@ -30,29 +30,31 @@ export default function ExtraStack(props) {
         {card1 &&
           <Card
             key={card1.id}
+            id={card1.id}
             number={card1.number}
             color={card1.color}
             visible={true}
+            dragBlock={true}
             shift={{ left: 0 + 'px' }}
-            isCurrent={(!card3 && !card2) && card1.isCurrent}
           />}
         {card2 &&
           <Card
             key={card2.id}
+            id={card2.id}
             number={card2.number}
             color={card2.color}
             visible={true}
+            dragBlock={true}
             shift={{ left: 30 + 'px' }}
-            isCurrent={!card3 && card2.isCurrent}
           />}
         {card3 &&
           <Card
             key={card3.id}
+            id={card3.id}
             number={card3.number}
             color={card3.color}
             visible={true}
             shift={{ left: 60 + 'px' }}
-            isCurrent={card3.isCurrent}
           />}
       </div>
     </>

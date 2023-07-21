@@ -1,8 +1,18 @@
 import { useState } from 'react'
 import Card from "./Card"
 import blankCard from '../assets/blank_card.svg';
+import { useDrop } from 'react-dnd';
 
 export default function MainStack(props) {
+
+  const [{ isOver }, dropRef] = useDrop(() => ({
+    accept: 'card',
+    drop: (item) => handleDrop(item.id)
+  }));
+
+  function handleDrop(id) {
+    props.interact(id, props.stackNum)
+  }
 
   const styles = [];
 
@@ -11,7 +21,7 @@ export default function MainStack(props) {
   }
 
   return (
-    <div className='mainStack' onClick={props.chooseCard} >
+    <div className='mainStack' onClick={props.chooseCard} ref={dropRef}>
       {props.cards.length > 0
         ?
         props.cards.map((card, i) => {
@@ -19,15 +29,15 @@ export default function MainStack(props) {
           return (
             <Card
               key={card.id}
+              id={card.id}
               number={card.number}
               color={card.color}
               shift={styles[i - 1]}
               visible={card.visible}
-              isCurrent={card.isCurrent}
-              clickCard={() => props.interact(props.stackNum, i - 1)}
+              isDraggable={i === props.cards.length}
             />)
         })
-        : <img className='card' src={blankCard} onClick={() => props.interact(props.stackNum, 0)} />
+        : <img className='card' src={blankCard} />
       }
     </div>
   )

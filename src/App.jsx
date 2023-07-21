@@ -8,11 +8,9 @@ import { useState } from 'react';
 function App() {
 
   const [cards, setCards] = useState([[], [], [], [], [], [], [], [], [], [], [], [], []]);
-  const [currentCard, setCurrentCard] = useState(null);
   const [gameState, setGameState] = useState(() => 'before');
 
   function newGame() {
-    setCurrentCard(null);
     setCards([[], [], [], [], [], [], [], []]);
     const tempCardsArray = cardsData.slice();
     for (let card of tempCardsArray) {
@@ -72,35 +70,11 @@ function App() {
     })
   }
 
-  function clickCard(stackNum, cardNum) {
-    // choose card
-    if (currentCard === null) {
-      if (cards[stackNum].length === 0) return;
+  function clickCard(cardId, stackNum) {
+    const currentCard = findCard(cardId);
+    // place card on main stacks
+    if (currentCard !== null && stackNum < 7 && checkPlacing(currentCard, stackNum)) {
 
-      let currCard = cards[stackNum][cardNum];
-      if (!currCard.visible) return;
-
-      setCards(prevCards => {
-        const copiedCards = [...prevCards];
-        for (let stack of copiedCards) {
-          let nextCards = false;
-          for (let i = 0; i < stack.length; i++) {
-            if (stack[i].id === currCard.id) {
-              nextCards = true;
-            }
-            if (nextCards) {
-              stack[i].isCurrent = true;
-            } else {
-              stack[i].isCurrent = false;
-            }
-          }
-        }
-        return copiedCards;
-      });
-      setCurrentCard([stackNum, cardNum]);
-
-      // place card on main stacks
-    } else if (currentCard !== null && stackNum < 7 && checkPlacing(stackNum, cardNum)) {
       setCards(prevCards => {
 
         let currCard = prevCards[currentCard[0]][currentCard[1]];
@@ -121,10 +95,9 @@ function App() {
 
         return copiedCards;
       });
-      setCurrentCard(null);
 
       // place on foundation stacks
-    } else if (currentCard !== null && stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1 && checkPlacing(stackNum, cardNum)) {
+    } else if (currentCard !== null && stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1 && checkPlacing(currentCard, stackNum)) {
 
       setCards(prevCards => {
 
@@ -146,19 +119,24 @@ function App() {
 
         return copiedCards;
       });
-      setCurrentCard(null);
-    }
-    else {
-      resetClick();
     }
     updateVisibility();
     gameFinished();
   }
 
-  function checkPlacing(stackNum, cardNum) {
+  function findCard(cardId) {
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = 0; j < cards[i].length; j++) {
+        if (cards[i][j].id === cardId) return [i, j];
+      }
+    }
+  }
+
+  function checkPlacing(currentCard, stackNum) {
 
     const currCard = cards[currentCard[0]][currentCard[1]];
-    const cardBelow = cards[stackNum][cardNum];
+    const cardBelow = cards[stackNum][cards[stackNum].length - 1];
+
 
     if (cardBelow === undefined && stackNum > 8) {
       // placing card on empty foundation stack
@@ -187,32 +165,6 @@ function App() {
     if (cards[9].length === 13 && cards[10].length === 13 && cards[11].length === 13 && cards[12].length === 13) {
       setGameState('finished');
     }
-  }
-
-  function resetClick() {
-
-    setCards(prevCards => {
-
-      let currCard = prevCards[currentCard[0]][currentCard[1]];
-      const copiedCards = [...prevCards];
-
-      if (!currentCard) return;
-
-      for (let stack of copiedCards) {
-        let nextCards = false;
-        for (let i = 0; i < stack.length; i++) {
-          if (stack[i].id === currCard.id) {
-            nextCards = true;
-          }
-          if (nextCards) {
-            stack[i].isCurrent = false;
-          }
-        }
-      }
-
-      return copiedCards;
-    });
-    setCurrentCard(null);
   }
 
   const mainBoard = (
