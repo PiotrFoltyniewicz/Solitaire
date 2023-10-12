@@ -7,7 +7,10 @@ export default function MainStack(props) {
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: 'card',
-    drop: (item) => handleDrop(item.id)
+    drop: (item) => handleDrop(item.id),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver()
+    })
   }));
 
   function handleDrop(id) {

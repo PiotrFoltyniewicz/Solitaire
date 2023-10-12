@@ -3,19 +3,24 @@ import FoundationStack from './Components/FoundationStack.jsx';
 import ExtraStack from './Components/ExtraStack.jsx';
 import Menu from './Components/Menu.jsx';
 import MainStack from './Components/MainStack.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
 
   const [cards, setCards] = useState([[], [], [], [], [], [], [], [], [], [], [], [], []]);
   const [gameState, setGameState] = useState(() => 'before');
+  const [prevMove, setPrevMove] = useState(null);
+
+  useEffect(() => newGame(), []);
+
+  function handleNewGame() {
+    window.location.reload(true);
+  }
 
   function newGame() {
-    setCards([[], [], [], [], [], [], [], []]);
-    const tempCardsArray = cardsData.slice();
+    const tempCardsArray = [...cardsData];
     for (let card of tempCardsArray) {
       card.visible = false;
-      card.isCurrent = false;
     }
     const arrLength = tempCardsArray.length;
     let outputCardsArray = [];
@@ -25,6 +30,7 @@ function App() {
       outputCardsArray.push(tempCardsArray.splice(rndIndex, 1)[0]);
     }
     setCards(prevCards => {
+      prevCards = [[], [], [], [], [], [], [], [], [], [], [], [], []];
       prevCards[0].push(...outputCardsArray.splice(0, 1));
       prevCards[1].push(...outputCardsArray.splice(0, 2));
       prevCards[2].push(...outputCardsArray.splice(0, 3));
@@ -39,9 +45,22 @@ function App() {
       prevCards[11] = [];
       prevCards[12] = [];
       return prevCards;
-    })
-    updateVisibility();
+    });
+    updateVisibility()
+    setPrevMove(null);
     setGameState('running');
+  }
+
+  function undoMove() {
+    setCards(prevCards => {
+      const copiedCards = [...prevCards];
+      if (![7, 9, 10, 11, 12].includes(prevMove[0]) && prevMove[0].length > 0) {
+        copiedCards[prevMove[0]][copiedCards[prevMove[0]].length - 1].visible = false;
+      }
+      copiedCards[prevMove[0]].push(copiedCards[prevMove[2]].pop());
+      return copiedCards;
+    })
+    setPrevMove(null);
   }
 
   function showExtraCards() {
@@ -55,6 +74,7 @@ function App() {
       return copiedCards;
     })
     updateVisibility();
+    setPrevMove(null)
   }
 
 
@@ -92,10 +112,9 @@ function App() {
           }
         }
         copiedCards[stackNum].push(...copiedCards[currentCard[0]].splice(currentCard[1]));
-
         return copiedCards;
       });
-
+      setPrevMove([currentCard[0], currentCard[1], stackNum]);
       // place on foundation stacks
     } else if (currentCard !== null && stackNum > 8 && currentCard[1] === cards[currentCard[0]].length - 1 && checkPlacing(currentCard, stackNum)) {
 
@@ -116,9 +135,9 @@ function App() {
           }
         }
         copiedCards[stackNum].push(copiedCards[currentCard[0]].pop());
-
         return copiedCards;
       });
+      setPrevMove([currentCard[0], currentCard[1], stackNum]);
     }
     updateVisibility();
     gameFinished();
@@ -127,7 +146,9 @@ function App() {
   function findCard(cardId) {
     for (let i = 0; i < cards.length; i++) {
       for (let j = 0; j < cards[i].length; j++) {
-        if (cards[i][j].id === cardId) return [i, j];
+        if (cards[i][j].id === cardId) {
+          return [i, j];
+        }
       }
     }
   }
@@ -209,7 +230,7 @@ function App() {
 
   return (
     <div>
-      <Menu handleClick={newGame} />
+      <Menu newGameHandle={handleNewGame} undoHandle={undoMove} undoPossible={prevMove === null ? false : true} />
       {mainGame}
     </div>
 

@@ -10,7 +10,6 @@ export default function Card(props) {
       isDragging: !!monitor.isDragging()
     })
   }));
-
   return (
     <>
 

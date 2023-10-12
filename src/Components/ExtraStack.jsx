@@ -8,24 +8,8 @@ export default function ExtraStack(props) {
   function getRightIndex(ind) {
     return ind >= 0 ? ind : 0;
   }
-
   return (
     <>
-      <div className='extraStack' onClick={props.showExtraCards}>
-        {props.cards.length > 0
-          ?
-          props.cards.map(card => {
-            return <Card
-              key={card.id}
-              number={card.number}
-              color={card.color}
-              visible={false}
-            />
-          })
-          :
-          <img className='card' src={blankCard} />
-        }
-      </div>
       <div className='extraVisibleStack' onClick={() => props.interact(props.stackNum, props.shownCards.length - 1)}>
         {card1 &&
           <Card
@@ -56,6 +40,21 @@ export default function ExtraStack(props) {
             visible={true}
             shift={{ left: 60 + 'px' }}
           />}
+      </div>
+      <div className='extraStack' onClick={props.showExtraCards}>
+        {props.cards.length > 0
+          ?
+          props.cards.map(card => {
+            return <Card
+              key={card.id}
+              number={card.number}
+              color={card.color}
+              visible={false}
+            />
+          })
+          :
+          <img className='card' src={blankCard} />
+        }
       </div>
     </>
   )
