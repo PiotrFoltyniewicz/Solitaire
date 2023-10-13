@@ -1,5 +1,5 @@
 import Card from "./Card";
-import blankCard from '../assets/blank_card.svg';
+import blankCard from '/assets/blank_card.svg';
 
 export default function ExtraStack(props) {
 
@@ -18,7 +18,7 @@ export default function ExtraStack(props) {
             number={card1.number}
             color={card1.color}
             visible={true}
-            dragBlock={true}
+            dragBlock={props.shownCards[props.shownCards.length - 1].id === card1.id ? false : true}
             shift={{ left: 0 + 'px' }}
           />}
         {card2 &&
@@ -28,7 +28,7 @@ export default function ExtraStack(props) {
             number={card2.number}
             color={card2.color}
             visible={true}
-            dragBlock={true}
+            dragBlock={props.shownCards[props.shownCards.length - 1].id === card2.id ? false : true}
             shift={{ left: 30 + 'px' }}
           />}
         {card3 &&
@@ -38,6 +38,7 @@ export default function ExtraStack(props) {
             number={card3.number}
             color={card3.color}
             visible={true}
+            dragBlock={props.shownCards[props.shownCards.length - 1].id === card3.id ? false : true}
             shift={{ left: 60 + 'px' }}
           />}
       </div>

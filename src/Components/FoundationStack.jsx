@@ -1,4 +1,4 @@
-import blankCard from '../assets/blank_card.svg';
+import blankCard from '/assets/blank_card.svg';
 import Card from "./Card";
 import { useDrop } from 'react-dnd';
 

@@ -1,5 +1,5 @@
-import cardBack from '../assets/card_back.svg'
-import { useDrag } from 'react-dnd'
+import cardBack from '/assets/card_back.svg'
+import { useDrag, } from 'react-dnd'
 
 export default function Card(props) {
 

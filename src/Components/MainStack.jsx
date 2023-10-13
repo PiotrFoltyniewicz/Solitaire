@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Card from "./Card"
-import blankCard from '../assets/blank_card.svg';
+import blankCard from '/assets/blank_card.svg';
 import { useDrop } from 'react-dnd';
 
 export default function MainStack(props) {
